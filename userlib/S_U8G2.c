@@ -55,17 +55,24 @@ void u8g2init(void)
     u8g2_InitDisplay(&oled);
     u8g2_SetPowerSave(&oled, 0);
     u8g2_SetFont(&oled, u8g2_font_profont12_mr);
-    u8g2_FirstPage(&oled); //
-    do
+    for (int i = 0; i < 64; i+=2)
     {
-    } while (u8g2_NextPage(&oled));
+        u8g2_FirstPage(&oled); //
+        do
+        {
+            u8g2_DrawXBMP(&oled, 0, 0, 128, 64, face);
+            u8g2_SetDrawColor(&oled, 0);
+            u8g2_DrawBox(&oled, 0, 0, 128, 64 - i);
+            u8g2_SetDrawColor(&oled, 1);
+        } while (u8g2_NextPage(&oled));
+    }
 }
 
 void u8g2mainpage(void)
 {
     static uint16_t lefts = 49;
     static uint16_t rights = 49;
-    static uint8_t page = 0;
+    static uint8_t page = 3;
     static uint8_t drawedflag = 0;
     if (!gamestart) //如果游戏还没有开始,那么进入选择游戏模式
     {
@@ -155,7 +162,7 @@ void u8g2mainpage(void)
                 }
             } while (u8g2_NextPage(&oled));
         }
-        if (keystatic[KEY_A] == KEY_A && page != 3 && page != 4) //如果按下了A键则进入当前页的游戏
+        if (keystatic[KEY_A] == KEY_A && page != 3) //如果按下了A键则进入当前页的游戏
             gamestart = 1;
     }
     else //根据当前页面选择游戏
@@ -197,7 +204,8 @@ void drawfailpic(uint16_t __score) //游戏失败界面
     u8g2_FirstPage(&oled);
     do
     {
-        u8g2_DrawStr(&oled, 24, 27, failbuf);
+        if (__score != 22) //人不能看见看不见的东西
+            u8g2_DrawStr(&oled, 24, 27, failbuf);
         u8g2_DrawStr(&oled, 0, 45, "A Restart");
         u8g2_DrawStr(&oled, 0, 60, "B Back to menu");
 

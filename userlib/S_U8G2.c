@@ -3,6 +3,8 @@
 #include "Snake.h"
 #include "To048.h"
 #include "bitmaps.h"
+#include "anime.h"
+
 u8g2_t oled;
 uint8_t gamestart = 0;
 
@@ -55,7 +57,7 @@ void u8g2init(void)
     u8g2_InitDisplay(&oled);
     u8g2_SetPowerSave(&oled, 0);
     u8g2_SetFont(&oled, u8g2_font_profont12_mr);
-    for (int i = 0; i < 64; i+=2)
+    for (int i = 0; i < 64; i += 2)
     {
         u8g2_FirstPage(&oled); //
         do
@@ -89,8 +91,9 @@ void u8g2mainpage(void)
             lefts++;
             if (!(lefts % 10 - 1))
             {
-                drawedflag = 0;
                 page--;
+                if (page != 3)
+                    drawedflag = 0;
             }
         }
         else
@@ -101,8 +104,9 @@ void u8g2mainpage(void)
             rights++;
             if (!(rights % 10 - 1))
             {
-                drawedflag = 0;
                 page++;
+                if (page != 3)
+                    drawedflag = 0;
             }
         }
         else
@@ -114,7 +118,7 @@ void u8g2mainpage(void)
             page = 0;
         if (!drawedflag)
         {
-            drawedflag = 1;
+            // drawedflag = 1;
             u8g2_FirstPage(&oled);
             do
             {
@@ -127,37 +131,22 @@ void u8g2mainpage(void)
                 switch (page % 5)
                 {
                 case 0:
-                    u8g2_DrawXBMP(&oled, 37, 0, 17, 13, flycatface);
-                    u8g2_DrawXBMP(&oled, 24, 17, 17, 13, flycatface);
-                    u8g2_DrawXBMP(&oled, 45, 20, 17, 13, flycatface);
-                    u8g2_DrawXBMP(&oled, 63, 23, 17, 13, flycatface);
-                    u8g2_DrawXBMP(&oled, 69, 10, 17, 13, flycatface);
-                    u8g2_DrawStr(&oled, 37, 50, "Flappy");
+                    FBird_cover();
+                    u8g2_DrawStr(&oled, 37, 54, "Flappy");
                     u8g2_DrawStr(&oled, 43, 64, "Neko");
                     break;
                 case 1:
-                    u8g2_DrawXBMP(&oled, 37, 25, 56, 18, snakeface);
+
+                    Snake_cover();
                     u8g2_DrawStr(&oled, 40, 57, "Sneko");
                     break;
                 case 2:
-                    u8g2_DrawHLine(&oled, 44, 2 + 10, 40);
-                    u8g2_DrawHLine(&oled, 44, 22 + 10, 40);
-                    u8g2_DrawHLine(&oled, 44, 42 + 10, 40);
-                    u8g2_DrawVLine(&oled, 44, 2 + 10, 40);
-                    u8g2_DrawVLine(&oled, 64, 2 + 10, 40);
-                    u8g2_DrawVLine(&oled, 84, 2 + 10, 40);
-                    u8g2_DrawXBMP(&oled, 44 + 2, 2 + 10 + 2, 16, 16, big2);
-                    u8g2_DrawXBMP(&oled, 64 + 2 + 3, 2 + 10 + 2 + 1, 12, 12, snakeheadup);
-                    u8g2_DrawXBMP(&oled, 44 + 2, 22 + 10 + 2, 16, 16, big4);
-                    u8g2_DrawXBMP(&oled, 64 + 2, 22 + 10 + 2, 16, 16, big8);
+                    To048_cover();
                     // u8g2_DrawStr(&oled, 40, 64, "2048");
                     break;
                 case 3:
                     u8g2_DrawXBMP(&oled, 0, 0, 128, 64, face);
-                    // u8g2_DrawStr(&oled, 40, 27, "Tips");
-                    // u8g2_DrawStr(&oled, 26, 39, "A Play");
-                    // u8g2_DrawStr(&oled, 26, 51, "B Menu");
-                    // u8g2_DrawStr(&oled, 26, 63, "Y Pause");
+                    drawedflag = 1;
                     break;
                 }
             } while (u8g2_NextPage(&oled));

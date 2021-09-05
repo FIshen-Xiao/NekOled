@@ -10,7 +10,8 @@
             "s_keypad.h": "c",
             "s_u8g2.h": "c",
             "flappybird.h": "c",
-            "to048.h": "c"
+            "to048.h": "c",
+            "anime.h": "c"
         },
         "C_Cpp.default.intelliSenseMode": "gcc-arm",
         "files.autoGuessEncoding": true,
